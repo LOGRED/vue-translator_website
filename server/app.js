@@ -18,7 +18,7 @@ app.get("/translate", async function (req, res) {
   const lang = await checkLang(query);
 
   console.log(lang);
-  
+
   var options = {
     url: api_url,
     form: { source: lang.langCode, target: target, text: query },
@@ -51,14 +51,6 @@ const checkLang = (query) => {
     },
   };
 
-  const result = request.post(options, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      return body;
-    } else {
-      return { success: false };
-    }
-  });
-
   return new Promise(function (resolve, reject) {
     request.post(options, function (error, response, body) {
       if (!error && response.statusCode == 200) {
@@ -71,5 +63,5 @@ const checkLang = (query) => {
 };
 
 app.listen(4000, () => {
-  console.log(`Example app listening on port 4000`);
+  console.log(`Translate Server Start 4000`);
 });
