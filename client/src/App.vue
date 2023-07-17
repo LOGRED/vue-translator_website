@@ -6,7 +6,7 @@
     영어<input type="radio" name="lang" @:click="this.lang = 'en'" checked />
     일본어<input type="radio" name="lang" @:click="this.lang = 'ja'" />
   </div>
-  <input type="text" @:keypress="(e) => clickEnterEvent(e)" @:click="() => { msg = ''; changeBarStatus(true) }"
+  <input maxlength="100" type="text" @:keypress="(e) => clickEnterEvent(e)" @:click="() => { msg = ''; changeBarStatus(true) }"
     v-model="msg" class="search" />
   <button @:click="this.getTranslate(this.msg)" class="button1">번역</button>
   <p v-for=" value  in  output " :key="value"
@@ -36,9 +36,8 @@ export default {
           this.msg = '';
           const translate = await axios.get(`/translate?msg=${temp}&lang=${this.lang}`);
           this.output.push({ original: originalMsg, translate: translate.data, status: false, index: this.output.length })
-          
         } catch (err) {
-          this.output.push({ original: originalMsg, translate: '입력언어와 번역언어가 같습니다.', status: false, index: this.output.length })
+          this.output.push({ original: originalMsg, translate: '입력언어와 번역언어가 같거나, 언어를 인식하지 못하였습니다.', status: false, index: this.output.length })
         }
       }
     },
