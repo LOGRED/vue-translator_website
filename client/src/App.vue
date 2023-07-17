@@ -1,29 +1,29 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" style="width: 15%;">
   <h1>번역기</h1>
-  <div class="radio">
-    한국어<input type="radio" name="lang" @:click="this.lang = 'ko'" />
-    영어<input type="radio" name="lang" @:click="this.lang = 'en'" checked />
-    일본어<input type="radio" name="lang" @:click="this.lang = 'ja'" />
-  </div>
-  <input maxlength="100" type="text" @:keypress="(e) => clickEnterEvent(e)" @:click="() => { msg = ''; changeBarStatus(true) }"
-    v-model="msg" class="search" />
+  <ChoiceLang :changeLang="changeLang" />
+  <input maxlength="100" type="text" @:keypress="(e) => clickEnterEvent(e)"
+    @:click="() => { msg = ''; changeBarStatus(true) }" v-model="msg" class="search" />
   <button @:click="this.getTranslate(this.msg)" class="button1">번역</button>
-  <p v-for=" value  in  output " :key="value"
-    @:click="() => { output[value.index].status = !output[value.index].status }">
-    {{
-      value.status ? value.original : value.translate }}</p>
+  <div class="resultField">
+    <div v-for=" value  in  output " :key="value"
+      @:click="() => { output[value.index].status = !output[value.index].status }">
+      <p class="resultBox">{{
+        value.status ? value.original : value.translate }}</p>
+    </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
+import ChoiceLang from './components/ChoiceLang.vue'
 
 export default {
   name: 'App',
   data() {
     return {
       msg: '문자를 입력해주세요.',
-      lang: 'en',
+      lang: '',
       output: [],
       bar: false
     }
@@ -48,9 +48,13 @@ export default {
     },
     changeBarStatus(status) {
       this.bar = status;
+    },
+    changeLang(lang) {
+      this.lang = lang;
     }
   },
   components: {
+    ChoiceLang,
   }
 }
 </script>
@@ -63,40 +67,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 100px;
+  margin-top: 60px;
 }
 
-.radio {
-  font-weight: bold;
-}
 
-input[type='radio']:after {
-  width: 15px;
-  height: 15px;
-  border-radius: 15px;
-  top: -2px;
-  left: -1px;
-  position: relative;
-  background-color: #d1d3d1;
-  content: '';
-  display: inline-block;
-  visibility: visible;
-  border: 2px solid white;
-}
-
-input[type='radio']:checked:after {
-  width: 15px;
-  height: 15px;
-  border-radius: 15px;
-  top: -2px;
-  left: -1px;
-  position: relative;
-  background-color: #4CAF50;
-  content: '';
-  display: inline-block;
-  visibility: visible;
-  border: 2px solid white;
-}
 
 .button1 {
   padding: 0.5rem;
@@ -131,5 +105,30 @@ input[type='radio']:checked:after {
 
 .search:focus {
   border: 2px solid #2c3e50;
+}
+
+.resultBox {
+  /* display: inline-block; */
+  display: flex;
+  border: 2px solid #4CAF50;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  margin: 0.3rem;
+  min-height: 10vh;
+  max-height: 10vh;
+  max-width: 70vw;
+  min-width: 70vw;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.resultField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 55vh;
+  overflow: auto;
 }
 </style>
