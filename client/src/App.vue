@@ -75,20 +75,21 @@ export default {
 
 .button1 {
   padding: 0.5rem;
-  background-color: white;
-  color: #577292;
+  background-color: #4CAF50;
+  color: #fff;
   font-size: 1rem;
   font-weight: bold;
   border-radius: 1rem;
   border: 2px solid #4CAF50;
 }
 
-.button1:hover {
-  background-color: #4CAF50;
-}
+/* .button1:hover {
+  background-color: rgba(76, 175, 80, 0.5);
+} */
 
 .button1:active {
-  background-color: #3a743c;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.24);
+  transform: translateY(1px);
 }
 
 .search {
@@ -136,7 +137,13 @@ export default {
   border: 2px solid #4CAF50;
 }
 
+.success:active {
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.24);
+  transform: translateY(1px);
+}
+
 .fail {
   border: 2px solid #db2121;
+  color: #db2121;
 }
 </style>
