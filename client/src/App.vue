@@ -8,8 +8,9 @@
   <div class="resultField">
     <div v-for=" value  in  output " :key="value"
       @:click="() => { output[value.index].status = !output[value.index].status }">
-      <p class="resultBox">{{
+      <p v-if="value.info === 0" class="resultBox success">{{
         value.status ? value.original : value.translate }}</p>
+      <p v-else-if="value.info === 1" class="resultBox fail">{{ value.translate }}</p>
     </div>
   </div>
 </template>
@@ -35,9 +36,9 @@ export default {
           let temp = this.msg;
           this.msg = '';
           const translate = await axios.get(`/translate?msg=${temp}&lang=${this.lang}`);
-          this.output.push({ original: originalMsg, translate: translate.data, status: false, index: this.output.length })
+          this.output.push({ original: originalMsg, translate: translate.data, status: false, index: this.output.length, info: 0 })
         } catch (err) {
-          this.output.push({ original: originalMsg, translate: '입력언어와 번역언어가 같거나, 언어를 인식하지 못하였습니다.', status: false, index: this.output.length })
+          this.output.push({ original: originalMsg, translate: '입력언어와 번역언어가 같거나, 언어를 인식하지 못하였습니다.', status: false, index: this.output.length, info: 1 })
         }
       }
     },
@@ -110,7 +111,6 @@ export default {
 .resultBox {
   /* display: inline-block; */
   display: flex;
-  border: 2px solid #4CAF50;
   border-radius: 1rem;
   padding: 0.5rem;
   margin: 0.3rem;
@@ -130,5 +130,13 @@ export default {
   align-items: center;
   height: 55vh;
   overflow: auto;
+}
+
+.success {
+  border: 2px solid #4CAF50;
+}
+
+.fail {
+  border: 2px solid #db2121;
 }
 </style>
